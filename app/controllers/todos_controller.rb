@@ -1,22 +1,40 @@
 class TodosController < ApplicationController
-
+  before_action :set_todo, only: [:update, :destroy, :show]
   # GET /todos
   def index
     @todos = Todo.all
     json_response @todos
   end
 
+  # POST /todos
   def create
-    @todo = Todo.create(todo_params)
+    @todo = Todo.create!(todo_params)
     json_response @todo, :created
   end
 
+  # GET /todos/:id
   def show
-    
+    json_response @todo
+  end
+
+  # PUT /todos/:id
+  def update
+    @todo.update(todo_params)
+    json_response @todo
+  end
+
+  # DELETE /todos/:id
+  def destroy
+    @todo.destroy
+    head :no_content
   end
   private
 
   def todo_params
-    params.require(:todo).permit(:title, :user_id)
+    params.permit(:title, :user_id)
+  end
+
+  def set_todo
+    @todo = Todo.find(params[:id])
   end
 end
