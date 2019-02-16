@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :set_todo
-  before_action :set_item, only: [:show, :update, :delete] 
+  before_action :set_item, only: [:show, :update, :destroy] 
   
   def index
     @items = @todo.items
@@ -21,7 +21,7 @@ class ItemsController < ApplicationController
     # PUT /todos/:id
   def update
     @item.update(item_params)
-    json_response @item
+    head :no_content
   end
 
     # DELETE /todos/:id
