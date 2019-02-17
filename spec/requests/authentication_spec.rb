@@ -1,4 +1,4 @@
-require 'rails helper'
+require 'rails_helper'
 
 RSpec.describe 'Authentication', type: :request do
     describe 'POST /auth/login' do
@@ -7,7 +7,7 @@ RSpec.describe 'Authentication', type: :request do
         let(:valid_credentials) do
             {
               email: user.email,
-              password: user.password
+              password: user.password_digest
             }.to_json
         end
         let(:invalid_credentials) do
@@ -16,7 +16,7 @@ RSpec.describe 'Authentication', type: :request do
                 password: Faker::Internet.password
             }.to_json
         end
-        
+
         context 'request with valid credentials' do
             before { post '/auth/login', params: valid_credentials, headers: headers }
     
