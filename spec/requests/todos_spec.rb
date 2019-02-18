@@ -55,7 +55,7 @@ RSpec.describe 'Todos API', type: :request do
   describe 'POST /todos' do
     # valid payload
     let(:valid_attributes) do
-        { title: 'Learn Elm', user_id: user.id }.to_json
+        { title: 'Learn Elm' }.to_json
     end
 
     context 'when the request is valid' do
@@ -71,7 +71,7 @@ RSpec.describe 'Todos API', type: :request do
     end
 
     context 'when the request is invalid' do
-      let(:invalid_attributes) { { title: 'Foobar' }.to_json }
+      let(:invalid_attributes) { { title: nil }.to_json }
       before { post '/todos', params: invalid_attributes, headers: headers }
 
       it 'returns status code 422' do
@@ -80,7 +80,7 @@ RSpec.describe 'Todos API', type: :request do
 
       it 'returns a validation failure message' do
         expect(json['message'])
-          .to match(/Validation failed: User must exist, User can't be blank/)
+          .to match(/Validation failed: Title can't be blank/)
       end
     end
   end
@@ -90,7 +90,7 @@ RSpec.describe 'Todos API', type: :request do
     let(:valid_attributes) { { title: 'Shopping' } }
 
     context 'when the record exists' do
-      before { put "/todos/#{todo_id}", params: valid_attributes, headers: headers }
+      before { put "/todos/#{todo_id}", params: valid_attributes.to_json, headers: headers }
 
       it 'updates the record' do
         expect(response.body).to be_empty
