@@ -3,9 +3,10 @@ Rails.application.routes.draw do
   resources :users do
   end
   
-  resources :todos do
-    resources :items do
-    end 
+  scope module: :v1, constraints: ApiVersion.new('v1', true) do
+    resources :todos do
+      resources :items
+    end
   end
   post 'auth/login', to: 'authentication#authenticate'
   post 'signup', to: 'users#create'
